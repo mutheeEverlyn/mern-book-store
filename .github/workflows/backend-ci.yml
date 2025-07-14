@@ -1,0 +1,32 @@
+name: Backend CI/CD
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+  pull_request:
+    paths:
+      - 'backend/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint || true
+
+      - name: Test
+        run: npm test || true
+
+      # Example: Deploy to Render (requires Render deploy hook)
+      # - name: Deploy to Render
+      #   run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }} 

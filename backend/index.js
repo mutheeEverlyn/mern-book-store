@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const helmet = require('helmet');
 
 const mongoose = require("mongoose");
 const port = process.env.PORT || 5000;
@@ -15,6 +16,7 @@ app.use(cors({
     ],
     credentials: true
 }))
+app.use(helmet());
 
 // routes
 const bookRoutes = require('./src/books/book.route');
