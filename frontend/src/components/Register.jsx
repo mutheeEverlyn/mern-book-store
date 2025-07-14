@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 
 const Register = () => {
     const [message, setMessage] = useState("");
+    const [success, setSuccess] = useState("");
     const { registerUser } = useAuth();
     const navigate = useNavigate();
     const {
@@ -14,12 +15,14 @@ const Register = () => {
       } = useForm()
 
       const onSubmit = async(data) => {
+        setMessage("");
+        setSuccess("");
         try {
             await registerUser(data.username, data.password);
-            alert("User registered successfully!");
-            navigate("/login");
+            setSuccess("User registered successfully! Redirecting to login...");
+            setTimeout(() => navigate("/login"), 1500);
         } catch (error) {
-           setMessage(error?.response?.data?.message || "Registration failed") 
+           setMessage(error?.response?.data?.message || "Registration failed");
            console.error(error)
         }
       }
@@ -45,9 +48,8 @@ const Register = () => {
                 className='shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow'
                 />
             </div>
-            {
-                message && <p className='text-red-500 text-xs italic mb-3'>{message}</p>
-            }
+            {success && <p className='text-green-500 text-xs italic mb-3'>{success}</p>}
+            {message && <p className='text-red-500 text-xs italic mb-3'>{message}</p>}
             <div>
                 <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded focus:outline-none w-full'>Register</button>
             </div>

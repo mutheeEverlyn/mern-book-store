@@ -52,8 +52,12 @@ router.post("/register", async (req, res) => {
         await user.save();
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
-        console.error("Failed to register user", error);
-        res.status(500).json({ message: "Failed to register user" });
+        console.error("Failed to register user", error, {
+            body: req.body,
+            headers: req.headers,
+            env: process.env
+        });
+        res.status(500).json({ message: "Failed to register user", error: error.message, stack: error.stack });
     }
 });
 

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 const AdminLogin = () => {
     const [message, setMessage] = useState("")
+    const [success, setSuccess] = useState("")
     const {
         register,
         handleSubmit,
@@ -17,6 +18,8 @@ const AdminLogin = () => {
       const navigate = useNavigate()
 
       const onSubmit = async (data) => {
+        setMessage("");
+        setSuccess("");
         // console.log(data)
         try {
            const response =  await axios.post(`${getBaseUrl()}/api/auth/admin`, data, {
@@ -30,13 +33,12 @@ const AdminLogin = () => {
                 localStorage.setItem('token', auth.token);
                 setTimeout(() => {
                     localStorage.removeItem('token')
-                    alert('Token has been expired!, Please login again.');
+                    setMessage('Token has been expired!, Please login again.');
                     navigate("/")
                 }, 3600 * 1000)
             }
-
-            alert("Admin Login successful!")
-            navigate("/dashboard")
+            setSuccess("Admin Login successful! Redirecting to dashboard...");
+            setTimeout(() => navigate("/dashboard"), 1500);
 
         } catch (error) {
             setMessage("Please provide a valid email and password") 
@@ -65,9 +67,8 @@ const AdminLogin = () => {
                     className='shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow'
                     />
                 </div>
-                {
-                    message && <p className='text-red-500 text-xs italic mb-3'>{message}</p>
-                }
+                {success && <p className='text-green-500 text-xs italic mb-3'>{success}</p>}
+                {message && <p className='text-red-500 text-xs italic mb-3'>{message}</p>}
                 <div className='w-full'>
                     <button className='bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-8 rounded focus:outline-none'>Login </button>
                 </div>

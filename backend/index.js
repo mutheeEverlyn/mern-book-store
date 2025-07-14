@@ -27,11 +27,26 @@ app.use("/api/orders", orderRoutes)
 app.use("/api/auth", userRoutes)
 app.use("/api/admin", adminRoutes)
 
-async function main() {
-  await mongoose.connect(process.env.DB_URL);
-  app.use("/", (req, res) => {
-    res.send("Book Store Server is running!");
+// Health check endpoint
+app.get('/health', async (req, res) => {
+  const dbState = mongoose.connection.readyState;
+  res.json({
+    server: "ok",
+    db: dbState === 1 ? "connected" : "disconnected"
   });
+});
+
+async function main() {
+  try {
+    await mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log("MongoDB connected successfully!");
+    app.use("/", (req, res) => {
+      res.send("Book Store Server is running!");
+    });
+  } catch (err) {
+    console.error("Failed to connect to MongoDB:", err.message);
+    process.exit(1); // Stop the server if DB connection fails
+  }
 }
 
 main().then(() => console.log("Mongodb connect successfully!")).catch(err => console.log(err));
