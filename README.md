@@ -176,6 +176,28 @@ JWT_SECRET_KEY=your_jwt_secret
 ## 📄 Documentation
 - Add documentation of your monitoring setup and deployment process here.
 
+### 🚀 Deployment Documentation
+
+#### Backend Deployment (Render)
+1. Go to [Render.com](https://render.com/) and sign in or create an account.
+2. Click "New Web Service".
+3. Connect your GitHub repository and select the backend folder.
+4. Set the build command to `npm install` and the start command to `npm start`.
+5. Set environment variables (`DB_URL`, `JWT_SECRET_KEY`) in the Render dashboard.
+6. Click "Create Web Service" and wait for deployment to complete.
+7. Copy the deployed backend URL for use in your frontend and for API requests.
+8. Monitor logs and health at `/health` endpoint.
+
+#### Frontend Deployment (Vercel)
+1. Go to [Vercel.com](https://vercel.com/) and sign in or create an account.
+2. Click "New Project" and import your GitHub repository.
+3. Select the frontend folder for deployment.
+4. Set the build command to `npm run build` and the output directory to `dist`.
+5. Set the environment variable `VITE_API_BASE_URL` to your backend’s deployed URL.
+6. Click "Deploy" and wait for deployment to complete.
+7. Copy the deployed frontend URL for sharing and use.
+8. You can set up a custom domain and HTTPS in the Vercel dashboard if desired.
+
 ---
 # mern-book-store-app
 ![full-stack-book-store-mern-project](/frontend/src/assets/github-cover.png)
